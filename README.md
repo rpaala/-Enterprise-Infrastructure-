@@ -21,7 +21,11 @@ The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cl
  host         ops VM, NAS    (admin)        printer, VoIP
    │
    └─ VMs: k3s-cp-1 · k3s-wk-1 · k3s-wk-2 · ops
-```
+
+Archi Home Lab Architecture
+
+<img width="1596" height="1272" alt="image" src="https://github.com/user-attachments/assets/7f15c0af-1079-4737-a6d4-746e4bdeeaf5" />
+
 
 | Layer | Technology |
 |---|---|
