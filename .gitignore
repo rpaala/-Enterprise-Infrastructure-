@@ -1,0 +1,74 @@
+# --- Secrets and environment ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+id_ed25519*
+*.ppk
+secrets/
+*.secret
+*.secrets
+credentials*
+
+# --- WireGuard ---
+*.conf.wg
+wg*.conf
+wireguard/
+*.wg
+
+# --- Kubernetes ---
+kubeconfig
+*kubeconfig*
+.kube/
+k3s.yaml
+node-token
+*.age
+age.key
+keys.txt
+
+# --- Terraform ---
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+.terraform.lock.hcl
+
+# --- Ansible ---
+*.retry
+vault-password*
+.vault_pass*
+inventory/hosts.local*
+host_vars/*.local.yml
+
+# --- Proxmox automated install ---
+answer.toml
+!answer.toml.example
+*.iso
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# --- Editors and OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp

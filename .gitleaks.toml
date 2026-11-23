@@ -1,0 +1,38 @@
+# gitleaks config: default secret rules plus home-network identifiers.
+title = "home lab gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "private-ipv4-address"
+description = "Private (RFC 1918) IPv4 address. Use a placeholder such as <PROXMOX_IP>."
+regex = '''\b(?:10\.(?:25[0-5]|2[0-4]\d|1?\d?\d)|172\.(?:1[6-9]|2\d|3[01])|192\.168)\.(?:25[0-5]|2[0-4]\d|1?\d?\d)\.(?:25[0-5]|2[0-4]\d|1?\d?\d)\b'''
+keywords = ["10.", "172.", "192.168"]
+
+[[rules]]
+id = "mac-address"
+description = "MAC address. Use <MAC_ADDRESS>."
+regex = '''\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b'''
+
+[[rules]]
+id = "local-domain-hostname"
+description = "Local network hostname. Use a role name or <LOCAL_DOMAIN>."
+regex = '''\b[a-z0-9-]+\.(?:home\.arpa|lan|local|localdomain|internal)\b'''
+keywords = [".home.arpa", ".lan", ".local", ".localdomain", ".internal"]
+
+[[rules]]
+id = "wireguard-private-key"
+description = "WireGuard private key"
+regex = '''(?i)PrivateKey\s*=\s*[A-Za-z0-9+/]{42,43}='''
+keywords = ["privatekey"]
+
+[allowlist]
+description = "Placeholders and documentation"
+paths = ['''\.gitleaks\.toml$''', '''\.gitignore$''']
+# Commit 400a660 added the original build log with template example values
+# (an example 10.x address and a .local hostname), since replaced with placeholders.
+commits = ["400a660f590647114ddab8de4adefe0f325f6895"]
+regexes = [
+  '''<[A-Z0-9_]+>''',
+]
