@@ -1,6 +1,6 @@
-# Homelab Build Log — Phase 1: Proxmox VE on 2011 iMac
+# Build Log 01: Proxmox VE on a 2011 iMac (foundation, done before Phase 1)
 
-**Status:** Not started
+**Status:** Complete (host is built and running; see the [phase plan](../phase-plan.md))
 **Hardware:** iMac 12,1 (2011, 21.5" or 27"), previously running Fedora 43
 **Goal:** Replace Fedora with Proxmox VE, running fully headless, managed remotely from Windows laptop
 
@@ -27,19 +27,19 @@ iMac is on a different level of the house from the Ubiquiti router, with no exis
 
 **Topology:**
 ```
-UDR7 LAN port → powerline adapter (router end) → [house electrical wiring] →
+Gateway LAN port → powerline adapter (router end) → [house electrical wiring] →
 powerline adapter (iMac end) → small unmanaged gigabit switch → iMac
                                                                 → NAS (or other future device)
 ```
 
-- Router end only needs a single port — the powerline adapter there just injects the signal; any other wired devices near the router plug directly into the UDR7's remaining LAN ports
+- Router end only needs a single port — the powerline adapter there just injects the signal; any other wired devices near the router plug directly into the gateway's remaining LAN ports
 - iMac end needs a small **unmanaged gigabit switch** (~$12-15, e.g. Netgear GS305 or TRENDnet TEG-S350) since the powerline adapter itself is single-port but multiple devices (iMac, NAS, future Pi) may live at that end
 - Plug both powerline adapters directly into wall outlets — **not** into a power strip or surge protector, which kills the signal
 - Powerline only works reliably within a single electrical circuit/breaker panel — if adapters won't sync at all, this is the most likely cause
 
 - [ ] Powerline kit purchased (TRENDnet TPL-422E2K)
 - [ ] Small unmanaged switch purchased for iMac end
-- [ ] Adapter A connected at router end, into UDR7 LAN port, synced
+- [ ] Adapter A connected at router end, into Gateway LAN port, synced
 - [ ] Adapter B connected at iMac end, synced
 - [ ] Switch connected to Adapter B, iMac (and NAS if applicable) connected to switch
 - [ ] Link light active on all connections before proceeding to Step 1
@@ -107,8 +107,8 @@ Using **Rufus** (Windows):
 4. **Country/Timezone/Keyboard:** set accordingly
 5. **Root password + email:** set (record password in your password manager, not in this doc)
 6. **Network configuration:**
-   - Hostname: e.g. `<PROXMOX_HOSTNAME>`
-   - IP address: set a **static IP** (do this now, not later — pick something outside your router's DHCP range, e.g. `<PROXMOX_IP>` depending on your VLAN plan)
+   - Hostname: `<PROXMOX_HOSTNAME>` (e.g. `proxmox-01.lab.example`)
+   - IP address: set a **static IP** (do this now, not later — pick something outside your router's DHCP range, e.g. `<PROXMOX_IP>` from your management subnet)
    - Gateway: your Ubiquiti router's IP
    - DNS: router IP or `1.1.1.1`
 7. Confirm and install
