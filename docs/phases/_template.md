@@ -13,6 +13,21 @@ What this phase set out to prove, in one or two sentences.
 - Components, tools and versions
 - Links to code in this repo (e.g. `terraform/`, `ansible/`)
 
+## Test / exit criteria
+
+Copy this phase's exit checks from the [phase plan](../phase-plan.md). Every check needs a pass before the next phase starts. A failed check goes in the troubleshooting log, then gets fixed and run again.
+
+| # | Check | How to test (command or action) | Expected result | Result | Date | Evidence |
+|---|---|---|---|---|---|---|
+| 1 | | | | Pass / Fail | | Screenshot, log or link |
+| 2 | | | | | | |
+
+- [ ] All exit checks pass
+- [ ] Regression: earlier phases' key checks still pass (e.g. backups run, VPN connects, cluster nodes Ready)
+- [ ] Evidence saved (screenshots blurred, logs sanitized)
+
+**Go / no-go:** Go | No-go. Blocking issue, if any: <one line>
+
 ## Architecture decision
 
 What I chose, the alternatives, and why. (Copy to `docs/decisions/` as an ADR.)

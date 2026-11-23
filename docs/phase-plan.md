@@ -2,6 +2,8 @@
 
 The roadmap for the lab, from what's already built through an AI assistant and MBSE-as-code. Each phase lists its goal, what it builds on, the main steps, effort, and the **interview evidence** it should produce.
 
+Move to the next phase only when every box in its **Exit test** is ticked. Names in angle brackets, such as `<PROXMOX_HOST>`, are placeholders for your real values, which stay out of this repo.
+
 Effort: **Small** = 1 to 2 evenings, **Medium** = 1 to 2 weekends, **Large** = 3 or more weekends.
 
 ## Where the lab is today
@@ -29,6 +31,11 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 
 **Effort:** None. **Evidence:** A one-paragraph "why I built this" statement for the README.
 
+**Exit test (pass before moving on):**
+
+- [ ] The "why I built this" paragraph is written and saved in the README.
+- [ ] The 70/20/10 split is written down where you will see it when choosing what to polish.
+
 ## Phase 1: Finish the foundation (VLANs, WireGuard, NAS)
 
 **Goal:** Finish VLAN-segmented networking, NAS-backed storage and secure remote administration.
@@ -40,6 +47,18 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 5. Finish the NAS leftovers: restore a template VM under a new ID to prove backups work, turn on SMART alerts, set up the offsite copy, add workstation backups.
 
 **Effort:** Large (VLANs can lock you out; go slowly and log each change). **Evidence:** A sanitized network diagram, a WireGuard runbook, and a restore-test write-up ("restored a VM from backup in X minutes").
+
+**Exit test (pass before moving on):**
+
+- [ ] From a Trusted VLAN device, `ping <LAB_VM>` works. From an IoT device, `ping <PROXMOX_HOST>` fails.
+- [ ] From the IoT VLAN, `nmap -sn <MGMT_SUBNET>` finds no hosts.
+- [ ] On a phone with Wi-Fi off and WireGuard on, `https://<PROXMOX_HOST>:8006` loads. With WireGuard off, it does not.
+- [ ] `wg show` lists a recent handshake for each peer.
+- [ ] The restored template VM boots and you can log in. Record how long the restore took.
+- [ ] A test SMART alert reaches your email or phone.
+- [ ] The offsite bucket shows last night's backup with today's date.
+- [ ] One file restored from each workstation backup (Time Machine and Windows).
+- [ ] After a full Proxmox reboot, every VM comes back in order and `kubectl get nodes` shows 3 nodes Ready.
 
 ## Phase 2: Git repo and Terraform
 
@@ -55,6 +74,14 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 
 **Effort:** Medium. **Evidence:** The repo's commit history, a "one command builds a VM, one removes it" demo, and GCP code for cloud provisioning.
 
+**Exit test (pass before moving on):**
+
+- [ ] `git clone` of the repo works on a second machine, and `git log` shows your commits.
+- [ ] `git ls-files | grep tfstate` prints nothing, and the gitleaks check passes (no passwords, tokens or real IPs).
+- [ ] `terraform plan` on unchanged code reports "No changes".
+- [ ] `terraform apply` creates the test VM, you can SSH into it, and `terraform destroy` removes it from Proxmox.
+- [ ] In GCP, `apply` creates the resource, `destroy` removes it, the budget alert is set, and billing shows close to $0.
+
 ## Phase 3: Ansible
 
 **Goal:** Terraform creates machines; Ansible configures them, so a rebuilt VM comes back the same every time.
@@ -67,6 +94,13 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 
 **Effort:** Medium. **Evidence:** "I can tear down and rebuild my whole cluster from Git in under an hour", timed.
 
+**Exit test (pass before moving on):**
+
+- [ ] `ansible all -m ping` returns "pong" for every host.
+- [ ] Running the baseline playbook a second time reports `changed=0` (idempotent, safe to re-run).
+- [ ] `ssh -o PubkeyAuthentication=no <USER>@<K3S_NODE_1>` is refused, because password login is off.
+- [ ] Timed rebuild: destroy a test cluster, rebuild it with Terraform and Ansible, and `kubectl get nodes` shows 3 nodes Ready. Record the time.
+
 ## Phase 4: Docker and a small app
 
 **Goal:** Build a small app, containerize it, and run it on k3s.
@@ -78,6 +112,13 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 
 **Effort:** Medium. **Evidence:** The running app, its Dockerfile and manifests, and a screenshot or short video.
 
+**Exit test (pass before moving on):**
+
+- [ ] After `docker compose up`, `curl http://localhost:<PORT>/health` returns OK.
+- [ ] `kubectl get pods` shows the app Running with 0 restarts after 10 minutes.
+- [ ] `curl http://<K3S_NODE_1>:<NODEPORT>/health` from the workstation returns OK.
+- [ ] After `kubectl delete pod <POD>`, a new pod starts on its own and `/health` still answers.
+
 ## Phase 5: CI/CD with GitHub Actions
 
 **Goal:** Every push tests, scans, builds and deploys automatically.
@@ -88,6 +129,13 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 4. Store tokens as GitHub Secrets, never in files.
 
 **Effort:** Medium. **Evidence:** A green pipeline badge in the README, and an explanation of why the runner sits inside the network.
+
+**Exit test (pass before moving on):**
+
+- [ ] Push a small change: every stage goes green and the new version is live on k3s with no manual steps (e.g. `/health` shows the new version number).
+- [ ] Push a deliberately broken test: the pipeline stops at the test stage and nothing is deployed.
+- [ ] The self-hosted runner shows as Idle in the repo settings, and the router has no port forwarded to the cluster.
+- [ ] Tokens exist only in GitHub Secrets; the gitleaks check finds none in the repo.
 
 ## Phase 6: Security tools
 
@@ -101,6 +149,13 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 
 **Effort:** Medium to Large. **Evidence:** A build failed by a planted vulnerable image, a Falco alert screenshot, and the decision notes.
 
+**Exit test (pass before moving on):**
+
+- [ ] A build using an old, known-vulnerable base image fails at the Trivy stage.
+- [ ] `kubectl get certificate` shows READY True, and `curl -v https://<APP_HOSTNAME>` shows your certificate.
+- [ ] `kubectl exec -it <POD> -- sh` triggers a Falco alert within a minute.
+- [ ] The app reads its secret from a Kubernetes Secret, and no secret value appears in any file in the repo.
+
 ## Phase 7: Monitoring
 
 **Goal:** See what the lab is doing and get told when something breaks.
@@ -112,6 +167,14 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 5. Keep monitoring data on local disks until NAS write speed is fixed.
 
 **Effort:** Medium. **Evidence:** Dashboard screenshots and an incident note in `runbooks/` for an alert you received and fixed.
+
+**Exit test (pass before moving on):**
+
+- [ ] Grafana loads over WireGuard, and the cluster dashboard shows all 3 nodes.
+- [ ] Prometheus's Targets page shows every target as UP.
+- [ ] In Grafana Explore, Loki shows the API's log lines from the last 5 minutes.
+- [ ] Shut down one k3s agent VM: the "node down" alert arrives within about 5 minutes, and clears after it starts again.
+- [ ] After 7 days, monitoring data still fits within the VM disk space set aside.
 
 ## Phase 8: RAG engineering assistant
 
@@ -129,6 +192,15 @@ Builds on: the repo (Phase 2) as the knowledge source, the documentation habit f
 
 **Effort:** Large. **Evidence:** A live demo with cited sources and the eval score.
 
+**Exit test (pass before moving on):**
+
+- [ ] The index script reports how many chunks it stored, and searching a known phrase returns the right note.
+- [ ] At least 15 of the 20 test questions get a correct answer with the correct source link.
+- [ ] A question about something not in the notes gets "I don't know", not a made-up answer.
+- [ ] A scan of the indexed content finds no passwords, keys or real IPs.
+- [ ] Edit a runbook and push: after the pipeline runs, the assistant's answer reflects the change.
+- [ ] From outside the home network with WireGuard off, the assistant can't be reached.
+
 ## Phase 9: Digital engineering (MBSE as code)
 
 **Goal:** Model the lab's requirements and architecture in SysML v2 text, keep the model in Git, and have the pipeline trace every requirement to the code and evidence that satisfy it.
@@ -141,6 +213,12 @@ Builds on: the repo (Phase 2) as the knowledge source, the documentation habit f
 6. A GitHub Actions job rebuilds the matrix, fails when a requirement loses its trace, and publishes `docs/traceability.md`.
 
 **Effort:** Medium to Large; can start after Phase 2. **Evidence:** A pipeline-generated traceability matrix and a demo of a broken trace failing the build.
+
+**Exit test (pass before moving on):**
+
+- [ ] The pipeline parses the model with no syntax errors.
+- [ ] `docs/traceability.md` lists every requirement, each with at least one file that satisfies it and one piece of evidence.
+- [ ] On a test branch, remove one `# satisfies:` tag: the build fails and names that requirement. Put it back and the build passes.
 
 ## All phases at a glance
 
@@ -159,7 +237,7 @@ Builds on: the repo (Phase 2) as the knowledge source, the documentation habit f
 
 ## Habits for every phase
 
-At the end of each phase, add a write-up to [`docs/phases/`](phases/) using the [template](phases/_template.md):
+At the end of each phase, run its exit test and record the results in the write-up's **Test / exit criteria** table, then add a write-up to [`docs/phases/`](phases/) using the [template](phases/_template.md):
 
 - An **architecture decision**: what you chose and why (also in `docs/decisions/`).
 - **Troubleshooting notes** and **lessons learned**.
