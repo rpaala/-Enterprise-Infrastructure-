@@ -12,9 +12,13 @@
 | Test VM gets an address from the Lab subnet | Pass |
 | Proxmox web UI still reachable after the change | Pass |
 
+| Lab VLAN has internet access | Pass |
+| Lab VLAN blocked from management network | Pass |
+
 ## Lessons learned
 - "Checksum mismatch" on VM edit means a clone task was still running. Refresh and retry.
 - Cloud-init templates need a user and password set before console login.
 
 ## Next
-- Firewall rule: Lab VLAN must not reach the management network
+- Phase 1 complete. 
+- Start Phase 2. 
