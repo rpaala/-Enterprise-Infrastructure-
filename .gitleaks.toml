@@ -30,9 +30,6 @@ keywords = ["privatekey"]
 [allowlist]
 description = "Placeholders and documentation"
 paths = ['''\.gitleaks\.toml$''', '''\.gitignore$''']
-# Commit 400a660 added the original build log with template example values
-# (an example 10.x address and a .local hostname), since replaced with placeholders.
-commits = ["400a660f590647114ddab8de4adefe0f325f6895"]
 regexes = [
   '''<[A-Z0-9_]+>''',
 ]
