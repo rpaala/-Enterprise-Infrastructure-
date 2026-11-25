@@ -2,7 +2,7 @@
 
 Short records of significant choices. Name them `NNNN-title.md` and use this outline:
 
-```
+```text
 # NNNN: <Decision>
 Date: YYYY-MM-DD
 Status: Proposed | Accepted | Superseded by NNNN

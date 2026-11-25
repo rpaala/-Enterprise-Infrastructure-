@@ -15,9 +15,9 @@ Effort: **Small** = 1 to 2 evenings, **Medium** = 1 to 2 weekends, **Large** = 3
 | Proxmox host (iMac) | Built | VMs start at boot in a set order |
 | Ubuntu VM template | Built | Base for every new VM |
 | 3-node k3s cluster | Built | Ready to host workloads |
-| NAS storage | Mostly built | NFS shares for backups and k3s volumes; nightly Proxmox backups |
-| NAS leftovers | Not started | Restore test, SMART alerts, offsite copy, workstation backups |
-| Router VLANs | Not started | Segmentation |
+| NAS storage | Built | NFS shares for backups and k3s volumes; nightly Proxmox backups |
+| NAS leftovers | Done | Restore test, SMART alerts, offsite copy, workstation backups |
+| Router VLANs | In progress | Segmentation; Lab VLAN done, the rest (Management, Trusted, IoT, Guest) to do |
 | WireGuard VPN | Not started | Secure remote admin |
 | Terraform, Ansible, Docker, CI/CD, security tools, monitoring | Not started | Phases 2 to 7 |
 

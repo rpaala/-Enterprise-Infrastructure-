@@ -26,7 +26,8 @@ iMac is on a different level of the house from the Ubiquiti router, with no exis
 - Stick to HomePlug AV2 standard (not Zyxel's G.hn) if the powerline network is ever expanded later — HomePlug AV2 devices are cross-compatible across brands, G.hn generally is not
 
 **Topology:**
-```
+
+```text
 Gateway LAN port → powerline adapter (router end) → [house electrical wiring] →
 powerline adapter (iMac end) → small unmanaged gigabit switch → iMac
                                                                 → NAS (or other future device)
@@ -61,7 +62,7 @@ powerline adapter (iMac end) → small unmanaged gigabit switch → iMac
 
 ## Step 1 — Download Proxmox VE ISO
 
-1. On Windows laptop, go to: https://www.proxmox.com/en/downloads
+1. On Windows laptop, go to: <https://www.proxmox.com/en/downloads>
 2. Download the latest **Proxmox VE ISO Installer**
 3. Note the version number for this log: `___________`
 
@@ -91,6 +92,7 @@ Using **Rufus** (Windows):
 6. Proxmox installer boot menu should appear
 
 **If the USB doesn't show up in the boot picker:**
+
 - Try re-flashing with `dd` from a Linux/WSL machine instead of Rufus (more reliable EFI boot record for Mac firmware)
 - Try holding **C** instead of Option at boot
 - Confirm USB is formatted GPT, not MBR
@@ -166,10 +168,11 @@ systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 ## Step 7 — Close the Lid / Stop Using the Screen
 
 From this point forward:
+
 - Do not wake or interact with the physical iMac screen for routine use
 - All management happens via:
   - Web UI: `https://<static-ip>:8006`
-  - SSH: `ssh <PROXMOX_USER>@<static-ip>`
+  - SSH: `ssh <PROXMOX_USER>@<PROXMOX_IP>`
 
 - [ ] Confirmed can manage node fully without touching the iMac directly
 

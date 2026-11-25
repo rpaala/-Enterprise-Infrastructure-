@@ -4,11 +4,11 @@ Step-by-step process of building a home lab using readily available hardware and
 
 The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cluster, segmented networking, backed-up storage, infrastructure as code, a CI/CD pipeline, security tooling, monitoring, and AI services that run on top of it all. Azure and AWS Cloud are also integrated in the project. Azure serves as the main cloud platform while side labs of AWS are featured, first created using console and then Terraform.
 
-> **Status:** Proxmox host, Ubuntu VM template, 3-node k3s cluster and NAS-backed storage are built. Networking (VLANs, WireGuard) is next. See the [phase plan](docs/phase-plan.md) for the full roadmap.
+> **Status:** Proxmox host, Ubuntu VM template, 3-node k3s cluster and NAS-backed storage are built. Phase 1 (foundation) is in progress: the Lab VLAN and NAS work are done; the remaining VLANs and WireGuard are still to do. See the [phase plan](docs/phase-plan.md) for the full roadmap.
 
 ## Architecture at a glance
 
-```
+```text
                  Internet
                     │  (only the VPN port is open; nothing else forwarded)
             ┌───────┴────────┐
@@ -21,11 +21,11 @@ The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cl
  host         ops VM, NAS    (admin)        printer, VoIP
    │
    └─ VMs: k3s-cp-1 · k3s-wk-1 · k3s-wk-2 · ops
+```
 
 Archi Home Lab Architecture
 
-<img width="1596" height="1272" alt="image" src="https://github.com/user-attachments/assets/7f15c0af-1079-4737-a6d4-746e4bdeeaf5" />
-
+![Home lab network architecture](diagrams/Network%20Architecture.png)
 
 | Layer | Technology |
 |---|---|
@@ -46,7 +46,7 @@ Details: [Architecture overview](docs/architecture.md).
 | Phase | What it adds | Status |
 |---|---|---|
 | 0 | Role focus: Platform 70% / Systems Eng 20% / DevSecOps 10% | Done |
-| 1 | Foundation: VLANs, WireGuard, NAS restore test and offsite backup | Next |
+| 1 | Foundation: VLANs, WireGuard, NAS restore test and offsite backup | In progress |
 | 2 | Git repo and Terraform (VMs as code, Azure VNet and VM) | Planned |
 | 3 | Ansible configuration management | Planned |
 | 4 | Docker and a small Python API on k3s | Planned |
@@ -67,7 +67,7 @@ Details: [Architecture overview](docs/architecture.md).
 
 ## Repository layout
 
-```
+```text
 docs/
   architecture.md      Sanitized architecture overview
   phase-plan.md        Phases 0 to 9 with goals, steps and interview evidence
