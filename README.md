@@ -2,7 +2,7 @@
 
 Step-by-step process of building a home lab using readily available hardware and open-source software. This project takes into factor what it's like to build a platform from the ground up, taking into factor the hardware, software, security, and general requirements. It is meant to be a scalable project, constantly evolving based on the needs of the stakeholder.
 
-The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cluster, segmented networking, backed-up storage, infrastructure as code, a CI/CD pipeline, security tooling, monitoring, and AI services that run on top of it all.
+The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cluster, segmented networking, backed-up storage, infrastructure as code, a CI/CD pipeline, security tooling, monitoring, and AI services that run on top of it all. Azure and AWS Cloud are also integrated in the project. Azure serves as the main cloud platform while side labs of AWS are featured, first created using console and then Terraform.
 
 > **Status:** Proxmox host, Ubuntu VM template, 3-node k3s cluster and NAS-backed storage are built. Networking (VLANs, WireGuard) is next. See the [phase plan](docs/phase-plan.md) for the full roadmap.
 
@@ -61,9 +61,9 @@ Details: [Architecture overview](docs/architecture.md).
 - **Platform engineering:** Proxmox virtualization, Kubernetes (k3s) on mixed amd64/arm64 nodes, GitOps
 - **Infrastructure as code:** Terraform, Ansible, unattended Proxmox reinstalls from an answer file
 - **Networking and security:** VLAN design, zone firewalls, VPN-only remote access, IoT isolation, DNS filtering, secrets management, secret scanning in CI
-- **Reliability:** 3-2-1 backups with tested restores, out-of-band monitoring, incident runbooks
+- **Reliability:** 3-2-1 backups with tested restores, out-of-band monitoring, incident runbooks; 3-2-1 backup prevents single point of failure.
 - **AI and automation:** local and hosted LLMs, an AI security digest, retrieval-augmented generation
-- **Systems engineering:** requirements, architecture views, interfaces and verification evidence (MBSE)
+- **Systems engineering:** requirements, architecture views, interfaces and verification evidence (MBSE) using Archi, an open source cross platform modeling toolkit to create ArchiMate models
 
 ## Repository layout
 
