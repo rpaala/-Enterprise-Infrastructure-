@@ -47,7 +47,7 @@ Details: [Architecture overview](docs/architecture.md).
 |---|---|---|
 | 0 | Role focus: Platform 70% / Systems Eng 20% / DevSecOps 10% | Done |
 | 1 | Foundation: VLANs, WireGuard, NAS restore test and offsite backup | Next |
-| 2 | Git repo and Terraform (VMs as code, small GCP demo) | Planned |
+| 2 | Git repo and Terraform (VMs as code, Azure VNet and VM) | Planned |
 | 3 | Ansible configuration management | Planned |
 | 4 | Docker and a small Python API on k3s | Planned |
 | 5 | CI/CD with GitHub Actions and a self-hosted runner | Planned |
@@ -72,6 +72,7 @@ docs/
   architecture.md      Sanitized architecture overview
   phase-plan.md        Phases 0 to 9 with goals, steps and interview evidence
   phases/              One write-up per phase (start from _template.md)
+  cloud/               Azure add-ons, AWS SAA-C03 side labs, cloud cost guardrails
   build-log/           Step-by-step build logs
   decisions/           Architecture decision records (ADRs)
   redaction-policy.md  What never goes in this repo, and the placeholders to use

@@ -6,6 +6,8 @@ Move to the next phase only when every box in its **Exit test** is ticked. Names
 
 Effort: **Small** = 1 to 2 evenings, **Medium** = 1 to 2 weekends, **Large** = 3 or more weekends.
 
+**Cloud track.** Azure is the lab's primary cloud, aimed at AZ-104 first and AZ-500 later. It is woven into Phases 2, 3, 5, 6 and 8 as an **Azure add-on**, done after that phase's own exit test ([Azure add-ons](cloud/azure-addons.md)). AWS stays as five optional [SAA-C03 side labs](cloud/aws-saa-labs.md) you can run alongside any phase. Every cloud step follows the same loop: do it, check it, answer the recap questions, tear it down. Read the [cost guardrails](cloud/cost-guardrails.md) before your first cloud step.
+
 ## Where the lab is today
 
 | Piece | Status | Notes |
@@ -69,10 +71,10 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 3. Install Terraform and connect it to Proxmox with a dedicated API token stored in a password manager, never in the repo.
 4. Write Terraform for one test VM cloned from the template. `plan`, `apply`, `destroy` until it's boring.
 5. Describe the k3s VMs in Terraform; import or recreate the existing nodes once confident.
-6. Add a small GCP project with a budget alert; create and destroy one tiny resource with Terraform.
+6. Add Azure: a free account with a budget alert, then Terraform for a resource group, a VNet and one tiny VM; destroy it after.
 7. Commit after each working step, with clear messages.
 
-**Effort:** Medium. **Evidence:** The repo's commit history, a "one command builds a VM, one removes it" demo, and GCP code for cloud provisioning.
+**Effort:** Medium. **Evidence:** The repo's commit history, a "one command builds a VM, one removes it" demo, and Azure code for cloud provisioning.
 
 **Exit test (pass before moving on):**
 
@@ -80,7 +82,9 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 - [ ] `git ls-files | grep tfstate` prints nothing, and the gitleaks check passes (no passwords, tokens or real IPs).
 - [ ] `terraform plan` on unchanged code reports "No changes".
 - [ ] `terraform apply` creates the test VM, you can SSH into it, and `terraform destroy` removes it from Proxmox.
-- [ ] In GCP, `apply` creates the resource, `destroy` removes it, the budget alert is set, and billing shows close to $0.
+- [ ] In Azure, `apply` creates the resource, `destroy` removes it, the budget alert is set, and billing shows close to $0.
+
+**Azure add-on (AZ-104):** Entra ID users, groups and RBAC scope, then a VNet and VM in Terraform. Steps, checks and recap questions: [Azure add-ons, Phase 2](cloud/azure-addons.md#phase-2-az-104-identity-first-then-a-vnet-and-vm-in-terraform).
 
 ## Phase 3: Ansible
 
@@ -100,6 +104,8 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 - [ ] Running the baseline playbook a second time reports `changed=0` (idempotent, safe to re-run).
 - [ ] `ssh -o PubkeyAuthentication=no <USER>@<K3S_NODE_1>` is refused, because password login is off.
 - [ ] Timed rebuild: destroy a test cluster, rebuild it with Terraform and Ansible, and `kubectl get nodes` shows 3 nodes Ready. Record the time.
+
+**Azure add-on (AZ-104):** onboard the lab VMs to Azure Arc with an Ansible role and audit them with Azure Policy. Steps, checks and recap questions: [Azure add-ons, Phase 3](cloud/azure-addons.md#phase-3-az-104-manage-the-home-lab-vms-with-azure-arc).
 
 ## Phase 4: Docker and a small app
 
@@ -137,6 +143,8 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 - [ ] The self-hosted runner shows as Idle in the repo settings, and the router has no port forwarded to the cluster.
 - [ ] Tokens exist only in GitHub Secrets; the gitleaks check finds none in the repo.
 
+**Azure add-on (AZ-104/AZ-500):** GitHub Actions deploys to Azure with OIDC, so no cloud secret is stored. Steps, checks and recap questions: [Azure add-ons, Phase 5](cloud/azure-addons.md#phase-5-az-104-az-500-github-actions-deploys-to-azure-with-oidc-no-stored-secret).
+
 ## Phase 6: Security tools
 
 **Goal:** Image scanning, runtime alerts, TLS and secrets handling.
@@ -155,6 +163,8 @@ Known limit: NAS writes are slow over powerline (about 2 MB/s), which matters fo
 - [ ] `kubectl get certificate` shows READY True, and `curl -v https://<APP_HOSTNAME>` shows your certificate.
 - [ ] `kubectl exec -it <POD> -- sh` triggers a Falco alert within a minute.
 - [ ] The app reads its secret from a Kubernetes Secret, and no secret value appears in any file in the repo.
+
+**Azure add-on (AZ-500):** Arc VM auth logs into Azure Monitor and a Microsoft Sentinel detection you trigger yourself. Steps, checks and recap questions: [Azure add-ons, Phase 6](cloud/azure-addons.md#phase-6-az-500-send-lab-logs-to-azure-monitor-and-catch-an-attack-with-microsoft-sentinel).
 
 ## Phase 7: Monitoring
 
@@ -201,6 +211,8 @@ Builds on: the repo (Phase 2) as the knowledge source, the documentation habit f
 - [ ] Edit a runbook and push: after the pipeline runs, the assistant's answer reflects the change.
 - [ ] From outside the home network with WireGuard off, the assistant can't be reached.
 
+**Azure add-on (optional):** Azure OpenAI as one swappable model, compared in your eval. Steps, checks and recap questions: [Azure add-ons, Phase 8](cloud/azure-addons.md#phase-8-optional-azure-openai-as-one-model-choice-for-the-assistant).
+
 ## Phase 9: Digital engineering (MBSE as code)
 
 **Goal:** Model the lab's requirements and architecture in SysML v2 text, keep the model in Git, and have the pipeline trace every requirement to the code and evidence that satisfy it.
@@ -220,13 +232,17 @@ Builds on: the repo (Phase 2) as the knowledge source, the documentation habit f
 - [ ] `docs/traceability.md` lists every requirement, each with at least one file that satisfies it and one piece of evidence.
 - [ ] On a test branch, remove one `# satisfies:` tag: the build fails and names that requirement. Put it back and the build passes.
 
+## AWS SAA-C03 side labs (optional)
+
+Five labs, each built in the console first, then in Terraform, then broken on purpose, then torn down: A. VPC from scratch · B. EC2, ALB and Auto Scaling across two AZs · C. S3 lifecycle and encryption plus an RDS read replica · D. API Gateway, Lambda and DynamoDB · E. IAM, KMS and CloudTrail. Full steps: [AWS SAA-C03 side labs](cloud/aws-saa-labs.md).
+
 ## All phases at a glance
 
 | Phase | What it adds | Effort | Branch it fills |
 |---|---|---|---|
 | 0 Role focus | Platform 70 / Sys Eng 20 / DevSecOps 10 | None | All |
 | 1 Foundation | VLANs, WireGuard, NAS leftovers | Large | Infra, Networking |
-| 2 Git + Terraform | Repo, VMs as code, GCP | Medium | Platform Engineering |
+| 2 Git + Terraform | Repo, VMs as code, Azure | Medium | Platform Engineering |
 | 3 Ansible | Automated VM and k3s setup | Medium | Platform Engineering |
 | 4 Docker | Python API on k3s | Medium | Platform Engineering |
 | 5 CI/CD | GitHub Actions pipeline | Medium | DevSecOps |
