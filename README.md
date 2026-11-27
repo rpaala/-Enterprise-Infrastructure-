@@ -1,11 +1,28 @@
-# Enterprise Infrastructure Home Lab
+## Enterprise-Infrastructure-Lab
 
-Step-by-step process of building a home lab using readily available hardware and open-source software. This project takes into factor what it's like to build a platform from the ground up, taking into factor the hardware, software, security, and general requirements. It is meant to be a scalable project, constantly evolving based on the needs of the stakeholder.
+## Purpose and Objective
+The goal of this lab is to build a realistic enterprise-style platform using affordable hardware and open-source software. The lab serves as a proving ground for:
 
-The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cluster, segmented networking, backed-up storage, infrastructure as code, a CI/CD pipeline, security tooling, monitoring, and AI services that run on top of it all. Azure and AWS Cloud are also integrated in the project. Azure serves as the main cloud platform while side labs of AWS are featured, first created using console and then Terraform.
+- Infrastructure Engineering
+- Platform Engineering
+- DevSecOps practices
+- Digital Engineering and MBSE
+- Cloud Integration
+- Automation and AI Services
 
-> **Status:** Proxmox host, Ubuntu VM template, 3-node k3s cluster and NAS-backed storage are built. Phase 1 (foundation) is in progress: the Lab VLAN and NAS work are done; the remaining VLANs and WireGuard are still to do. See the [phase plan](docs/phase-plan.md) for the full roadmap.
+This project is meant to be a scalable, constantly evolving based on the needs of the stakeholder. where to The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cluster, segmented networking, backed-up storage, infrastructure as code, a CI/CD pipeline, security tooling, monitoring, and AI services that run on top of it all. Azure and AWS Cloud are also integrated in the project. Azure serves as the main cloud platform while side labs of AWS are featured, first created using console and then Terraform.
 
+> **Status:** Proxmox host, Ubuntu VM template, 3-node k3s cluster and NAS-backed storage, Gitleaks scanning, and architecture documentation are complete.  > Phase 1 (foundation) is in progress: the Lab VLAN and NAS work are done; remaining VLANs and WireGuard access will be implemented next. See the [phase plan](docs/phase-plan.md) for the full roadmap.
+
+## Current Status
+
+Current capabilities implemented:
+- Proxmox VE running on repurposed hardware
+- 3-node k3s Kubernetes clusture
+- NAS-backed persistent storage
+- Infrastructure documented in Git
+- WireGuard remote access
+- Segmented VLAN architecture
 ## Architecture at a glance
 
 ```text
@@ -40,6 +57,31 @@ Archi Home Lab Architecture
 | AI | Ollama and hosted model APIs, a RAG assistant over the lab's own docs |
 
 Details: [Architecture overview](docs/architecture.md).
+
+## Key Architectural Decisions
+
+This lab follows Architectural Decision Records (ADRs) to capture major technical decisions and tradeoffs.
+
+### ADR-01: Proxmox VE as the hypervisor vs. VMware
+Proxmox VE is the primary virtualization platform selected since it is an open-source platform environment but possess enterprise capabilities. Furthermore, it has strong community support, supports both VMs and containers, and there are no licensing costs.
+
+**Tradeoffs**
+- Smaller commercial ecosystem than VMware
+- Fewer enterprise integration
+
+[View ADR-001](docs/decisions/ADR-001-proxmox.md)
+
+###ADR-002: k3s Instead of Full Kubernetes
+
+**Decision**
+Deploy k3s for the labs's Kubernetes platform.
+
+**Rationale**
+- Lightweight
+- Better suited for homelab hardware
+- Retains core Kubernetes functionality
+
+[View ADR-002](docs/decisions/ADR-002-k3s.md)
 
 ## Roadmap
 
