@@ -21,8 +21,8 @@ Current capabilities implemented:
 - 3-node k3s Kubernetes clusture
 - NAS-backed persistent storage
 - Infrastructure documented in Git
-- WireGuard remote access
-- Segmented VLAN architecture
+- Lab VLAN
+  
 ## Architecture at a glance
 
 ```text
