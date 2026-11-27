@@ -63,7 +63,7 @@ Details: [Architecture overview](docs/architecture.md).
 This lab follows Architectural Decision Records (ADRs) to capture major technical decisions and tradeoffs.
 
 ### ADR-01: Proxmox VE as the hypervisor vs. VMware
-Proxmox VE is the primary virtualization platform selected since it is an open-source platform environment but possess enterprise capabilities. Furthermore, it has strong community support, supports both VMs and containers, and there are no licensing costs.
+Proxmox VE was selected as the primary virtualization platform selected because it provides enterprise capabilities, supports both virtual machines and containers, benefits from a strong community ecosystem, and avoids licensing costs.
 
 **Tradeoffs**
 - Smaller commercial ecosystem than VMware
@@ -73,7 +73,7 @@ Proxmox VE is the primary virtualization platform selected since it is an open-s
 
 ## ADR-002: k3s Instead of Full Kubernetes
 
-Lightweight Kubernetes (k3s) is used as the lab's Kubernetes platform since it offers a lightweight footprint. It is better suited for homelab hardware. It maintains Kubernetes compatibility, and it offers an easier operational management. 
+k3s was selected as the Kubernetes platform because it provides Kubernetes compatibility with a significantly smaller operational footprint, making it better suited for resource-constrained homelab environments.  
 
 **Tradeoffs**
 - Smaller ecosystem than upstream Kubernetes
