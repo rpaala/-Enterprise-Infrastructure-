@@ -71,7 +71,7 @@ Proxmox VE is the primary virtualization platform selected since it is an open-s
 
 [View ADR-001](docs/decisions/ADR-001-proxmox.md)
 
-###ADR-002: k3s Instead of Full Kubernetes
+## ADR-002: k3s Instead of Full Kubernetes
 
 **Decision**
 Deploy k3s for the labs's Kubernetes platform.
