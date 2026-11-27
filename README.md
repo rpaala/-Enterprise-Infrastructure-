@@ -10,7 +10,7 @@ The goal of this lab is to build a realistic enterprise-style platform using aff
 - Cloud Integration
 - Automation and AI Services
 
-This project is meant to be a scalable, constantly evolving based on the needs of the stakeholder. where to The lab is built like a small enterprise platform: a hypervisor, a Kubernetes cluster, segmented networking, backed-up storage, infrastructure as code, a CI/CD pipeline, security tooling, monitoring, and AI services that run on top of it all. Azure and AWS Cloud are also integrated in the project. Azure serves as the main cloud platform while side labs of AWS are featured, first created using console and then Terraform.
+This project is meant to be a scalable, constantly evolving based on the needs of the stakeholder. The design intentionally follows enterprise patterns including segmented networks, infrastructure as code, GitOps workflows, security scanning, monitoring, documented architecture decisions, and traceable requirements rather than focusing solely on homelab administration. Azure and AWS Cloud are also integrated in the project. Azure serves as the main cloud platform while side labs of AWS are featured, first created using console and then Terraform.
 
 > **Status:** Proxmox host, Ubuntu VM template, 3-node k3s cluster and NAS-backed storage, Gitleaks scanning, and architecture documentation are complete.  > Phase 1 (foundation) is in progress: the Lab VLAN and NAS work are done; remaining VLANs and WireGuard access will be implemented next. See the [phase plan](docs/phase-plan.md) for the full roadmap.
 
