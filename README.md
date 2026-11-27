@@ -73,14 +73,12 @@ Proxmox VE is the primary virtualization platform selected since it is an open-s
 
 ## ADR-002: k3s Instead of Full Kubernetes
 
-**Decision**
-Deploy k3s for the labs's Kubernetes platform.
+Lightweight Kubernetes (k3s) is used as the lab's Kubernetes platform since it offers a lightweight footprint. It is better suited for homelab hardware. It maintains Kubernetes compatibility, and it offers an easier operational management. 
 
-**Rationale**
-- Lightweight
-- Better suited for homelab hardware
-- Retains core Kubernetes functionality
-
+**Tradeoffs**
+- Smaller ecosystem than upstream Kubernetes
+- Some enterprise-specific integration may differ
+  
 [View ADR-002](docs/decisions/ADR-002-k3s.md)
 
 ## Roadmap
